@@ -12,9 +12,7 @@ function MazeGenerator(canvasID, settings) {
   this.canvasID = canvasID;
   this.settings = settings;
   this.setupMaze();
-  this.generateMaze();
   this.setupCanvas();
-  this.drawMaze();
 }
 
 /*************************
@@ -26,16 +24,17 @@ MazeGenerator.prototype.setupCanvas = function() {
   this.ctx.imageSmoothingEnabled = false;
 };
 
-MazeGenerator.prototype.getWidth = function() {
+MazeGenerator.prototype.getCanvasWidth = function() {
   return this.canvas.width;
 };
 
-MazeGenerator.prototype.getHeight = function() {
+MazeGenerator.prototype.getCanvasHeight = function() {
   return this.canvas.height;
 };
 
 MazeGenerator.prototype.drawMaze = function() {
-
+  var height = this.settings.height;
+  var width = this.settings.width;
 };
 
 MazeGenerator.prototype.drawDemo = function() {
@@ -56,8 +55,30 @@ MazeGenerator.prototype.setupMaze = function() {
   for (var i=0; i<height; i++) {
     this.maze.push([]);
     for (var j=0; j<width; j++) {
-      // Bit Values - 0-3: border, 4-8: walls
-      this.maze[i].push([0, 0, 0, 0, 0, 0, 0, 0]);
+      // Values - Clockwise NESW borders, walls
+      var cell = [0, 0, 0, 0, 0, 0, 0, 0];
+
+      // Border: north
+      if (i === 0) {
+        cell[0] = 1;
+      }
+
+      // Border: south
+      else if (i === height-1) {
+        cell[2] = 1;
+      }
+
+      // Boder: west
+      if (j === 0) {
+        cell[3] = 1;
+      }
+
+      // Border: east
+      else if (j === width-1) {
+        cell[1] = 1;
+      }
+
+      this.maze[i].push(cell);
     }
   }
 };
@@ -73,7 +94,7 @@ MazeGenerator.prototype.generateMaze = function() {
 
   // Setup canvas project
   var canvasID = 'imagination';
-  var project = new MazeGenerator(canvasID, {width: 20, height: 20});
-  project.drawDemo();
+  var maze = new MazeGenerator(canvasID, {width: 20, height: 20});
+  maze.drawDemo();
 
 })();
