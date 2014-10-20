@@ -24,6 +24,10 @@ MazeGenerator.prototype.setupCanvas = function() {
   this.ctx.imageSmoothingEnabled = false;
 };
 
+MazeGenerator.prototype.clearCanvas = function() {
+  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+};
+
 MazeGenerator.prototype.getCanvasWidth = function() {
   return this.canvas.width;
 };
@@ -35,6 +39,22 @@ MazeGenerator.prototype.getCanvasHeight = function() {
 MazeGenerator.prototype.drawMaze = function() {
   var height = this.settings.height;
   var width = this.settings.width;
+  var rH = this.getCanvasWidth() / height;
+  var rW = this.getCanvasHeight() / width;
+  this.clearCanvas();
+
+  // Draw in maze walls
+  this.strokeStyle = 'rgb(200, 20, 20)';
+  for (var i=0; i<height; i++) {
+    for (var j=0; j<width; j++) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(j*rW, i*rH);         // top-left
+      this.ctx.lineTo(j*rW, (i+1)*rH);     // top-right
+      this.ctx.lineTo((j+1)*rW, (i+1)*rH); // bottom-right
+      this.ctx.lineTo((j+1)*rW, i*rH);     // bottom-left
+      this.ctx.stroke();
+    }
+  }
 };
 
 MazeGenerator.prototype.drawDemo = function() {
@@ -94,7 +114,9 @@ MazeGenerator.prototype.generateMaze = function() {
 
   // Setup canvas project
   var canvasID = 'imagination';
-  var maze = new MazeGenerator(canvasID, {width: 20, height: 20});
+  var settings = {width: 20, height: 20};
+  var maze = new MazeGenerator(canvasID, settings);
   maze.drawDemo();
+  maze.drawMaze();
 
 })();
