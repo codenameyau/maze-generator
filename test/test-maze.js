@@ -77,6 +77,7 @@
       'Border west of top left cell should be 0');
   });
 
+
   // Show test results
   test.results();
 
