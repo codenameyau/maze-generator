@@ -92,6 +92,8 @@ MazeGenerator.prototype.drawMaze = function() {
 MazeGenerator.prototype.setupMaze = function() {
   var height = this.settings.height;
   var width = this.settings.width;
+
+  // Create maze data structure
   this.maze = [];
   for (var i=0; i<height; i++) {
     this.maze.push([]);
@@ -124,8 +126,27 @@ MazeGenerator.prototype.setupMaze = function() {
   }
 };
 
-MazeGenerator.prototype.generateMaze = function() {
+MazeGenerator.prototype.getUnvisitedNeighbors = function(row, col) {
 
+};
+
+MazeGenerator.prototype.generateMaze = function() {
+  var height = this.settings.height;
+  var width = this.settings.width;
+  var cellStack = [];
+  var total = height * width;
+  var visited = 1;
+
+  // Step 1: chose a random cell
+  var cellRow = this.randRange(0, height);
+  var cellCol = this.randRange(0, width);
+
+  // Step 2: repeat until visited all cells
+  while (visited < total) {
+    // Step 3: find neighbors of cell with all walls intact
+    var neighbors = this.getUnvisitedNeighbors(cellRow, cellCol);
+    visited++;
+  }
 };
 
 /****************************
