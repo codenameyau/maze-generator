@@ -128,6 +128,13 @@ MazeGenerator.prototype.generateMaze = function() {
 
 };
 
+/****************************
+ * Maze Generator Utilities *
+ ****************************/
+MazeGenerator.prototype.randRange = function(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+};
+
 /****************
  * Main Program *
  ****************/
@@ -137,6 +144,7 @@ MazeGenerator.prototype.generateMaze = function() {
   var canvasID = 'imagination';
   var settings = {width: 20, height: 20};
   var maze = new MazeGenerator(canvasID, settings);
+  maze.generateMaze();
   maze.drawMaze();
 
 })();
