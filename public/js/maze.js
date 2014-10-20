@@ -2,6 +2,9 @@
  * Maze Generator
  * codenameyau.github.io
  * MIT License
+ *
+ * Tasks:
+ * - Refactor MazeCell into constructor
  */
 'use strict';
 
@@ -132,26 +135,27 @@ MazeGenerator.prototype.visitedCell = function(row, col) {
 };
 
 MazeGenerator.prototype.getUnvisitedNeighbors = function(row, col) {
+  // Elements: [row, col, curCell, oppCell]
   var neighbors = [];
 
   // Neighbor: north
   if (!this.maze[row][col][0] && !this.visitedCell(row-1, col)) {
-    neighbors.push([row-1, col]);
+    neighbors.push([row-1, col, 4, 6]);
   }
 
   // Neighbor: east
   if (!this.maze[row][col][1] && !this.visitedCell(row, col+1)) {
-    neighbors.push([row, col+1]);
+    neighbors.push([row, col+1, 5, 7]);
   }
 
   // Neighbor: south
   if (!this.maze[row][col][2] && !this.visitedCell(row+1, col)) {
-    neighbors.push([row+1, col]);
+    neighbors.push([row+1, col, 6, 4]);
   }
 
   // Neighbor: west
   if (!this.maze[row][col][3] && !this.visitedCell(row, col-1)) {
-    neighbors.push([row, col-1]);
+    neighbors.push([row, col-1, 7, 5]);
   }
 
   return neighbors;
@@ -169,11 +173,20 @@ MazeGenerator.prototype.generateMaze = function() {
   var cellCol = this.randRange(0, width);
 
   // Step 2: repeat until visited all cells
-  // while (visited < total) {
-  //   // Step 3: find neighbors of cell with all walls intact
-  //   var neighbors = this.getUnvisitedNeighbors(cellRow, cellCol);
-  //   visited++;
-  // }
+  while (visited < 2) { // [TODO] replace with total
+    // Step 3: find neighbors of cell with all walls intact
+    var neighbors = this.getUnvisitedNeighbors(cellRow, cellCol);
+    if (neighbors.length) {
+      // Step 4: knock down wall between neighbor
+      var nCell = neighbors[this.randRange(0, neighbors.length)];
+      this.maze[cellRow][cellCol][nCell[3]] = 1;
+      this.maze[nCell[0]][nCell[1]][nCell[4]] = 1;
+
+      // Step 5: push current cell to stack
+      cellStack.push([cellRow, cellCol]);
+    }
+    visited++;
+  }
 };
 
 /****************************
