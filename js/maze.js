@@ -126,8 +126,35 @@ MazeGenerator.prototype.setupMaze = function() {
   }
 };
 
-MazeGenerator.prototype.getUnvisitedNeighbors = function(row, col) {
+MazeGenerator.prototype.visitedCell = function(row, col) {
+  var cell = this.maze[row][col];
+  return (cell[4] || cell[5] || cell[6] || cell[7]);
+};
 
+MazeGenerator.prototype.getUnvisitedNeighbors = function(row, col) {
+  var neighbors = [];
+
+  // Neighbor: north
+  if (!this.maze[row][col][0] && !this.visitedCell(row-1, col)) {
+    neighbors.push([row-1, col]);
+  }
+
+  // Neighbor: east
+  if (!this.maze[row][col][1] && !this.visitedCell(row, col+1)) {
+    neighbors.push([row, col+1]);
+  }
+
+  // Neighbor: south
+  if (!this.maze[row][col][2] && !this.visitedCell(row+1, col)) {
+    neighbors.push([row+1, col]);
+  }
+
+  // Neighbor: west
+  if (!this.maze[row][col][3] && !this.visitedCell(row, col-1)) {
+    neighbors.push([row, col-1]);
+  }
+
+  return neighbors;
 };
 
 MazeGenerator.prototype.generateMaze = function() {
@@ -142,11 +169,11 @@ MazeGenerator.prototype.generateMaze = function() {
   var cellCol = this.randRange(0, width);
 
   // Step 2: repeat until visited all cells
-  while (visited < total) {
-    // Step 3: find neighbors of cell with all walls intact
-    var neighbors = this.getUnvisitedNeighbors(cellRow, cellCol);
-    visited++;
-  }
+  // while (visited < total) {
+  //   // Step 3: find neighbors of cell with all walls intact
+  //   var neighbors = this.getUnvisitedNeighbors(cellRow, cellCol);
+  //   visited++;
+  // }
 };
 
 /****************************
