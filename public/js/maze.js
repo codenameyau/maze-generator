@@ -51,10 +51,36 @@ MazeGenerator.prototype.drawMaze = function() {
   for (var i=0; i<height; i++) {
     for (var j=0; j<width; j++) {
       this.ctx.beginPath();
-      this.ctx.moveTo(j*rW, i*rH);         // top-left
-      this.ctx.lineTo(j*rW, (i+1)*rH);     // top-right
-      this.ctx.lineTo((j+1)*rW, (i+1)*rH); // bottom-right
-      this.ctx.lineTo((j+1)*rW, i*rH);     // bottom-left
+      this.ctx.moveTo(j*rW, i*rH);
+
+      // Wall: north
+      if (this.maze[i][j][4]) {
+        this.ctx.moveTo((j+1)*rW, i*rH);
+      } else {
+        this.ctx.lineTo((j+1)*rW, i*rH);
+      }
+
+      // Wall: east
+      if (this.maze[i][j][5]) {
+        this.ctx.moveTo((j+1)*rW, (i+1)*rH);
+      } else {
+        this.ctx.lineTo((j+1)*rW, (i+1)*rH);
+      }
+
+      // Wall: south
+      if (this.maze[i][j][6]) {
+        this.ctx.moveTo(j*rW, (i+1)*rH);
+      } else {
+        this.ctx.lineTo(j*rW, (i+1)*rH);
+      }
+
+      // Wall: west
+      if (this.maze[i][j][7]) {
+        this.ctx.moveTo(j*rW, i*rH);
+      } else {
+        this.ctx.lineTo(j*rW, i*rH);
+      }
+
       this.ctx.stroke();
     }
   }
