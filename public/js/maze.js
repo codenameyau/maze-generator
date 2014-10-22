@@ -1,12 +1,19 @@
 /*!
- * Maze Generator
+ * Maze Generator - maze.js
+ * MIT License (c) 2014
  * codenameyau.github.io
- * MIT License
- *
- * Tasks:
- * - Refactor MazeCell into constructor
  */
 'use strict';
+
+
+/*************************
+ * Maze Cell Constructor *
+ *************************/
+function MazeCell() {
+  this.border = [0, 0, 0, 0];
+  this.wall   = [0, 0, 0, 0];
+}
+
 
 /******************************
  * Maze Generator Constructor *
@@ -196,16 +203,3 @@ MazeGenerator.prototype.randRange = function(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
-/****************
- * Main Program *
- ****************/
-(function() {
-
-  // Setup canvas project
-  var canvasID = 'imagination';
-  var settings = {width: 20, height: 20};
-  var maze = new MazeGenerator(canvasID, settings);
-  maze.generateMaze();
-  maze.drawMaze();
-
-})();
