@@ -20,6 +20,10 @@ MazeCell.prototype.connected = function() {
   return (this.wall[0] || this.wall[1] || this.wall[2] || this.wall[3]);
 };
 
+MazeCell.prototype.setWall = function(position, value) {
+  this.wall[position] = value;
+};
+
 
 /******************************
  * Maze Generator Constructor *
@@ -187,17 +191,20 @@ MazeGenerator.prototype.generateMaze = function() {
   // Step 1: chose a random cell
   var cellRow = this.randRange(0, height);
   var cellCol = this.randRange(0, width);
+  var cell = this.maze[cellRow][cellCol];
 
   // Step 2: repeat until visited all cells
   while (visited < 2) { // [TODO] replace with total
+
     // Step 3: find neighbors of cell with all walls intact
     var neighbors = this.getUnvisitedNeighbors(cellRow, cellCol);
-    console.log(neighbors);
+
     if (neighbors.length) {
       // Step 4: knock down wall between neighbor
-      var nCell = neighbors[this.randRange(0, neighbors.length)];
-      // this.maze[cellRow][cellCol][nCell[3]] = 1;
-      // this.maze[nCell[0]][nCell[1]][nCell[4]] = 1;
+      var n = neighbors[this.randRange(0, neighbors.length)];
+      var nCell = n.cell;
+      cell.setWall(n.current, 1);
+      nCell.setWall(n.neighbor, 1);
 
       // Step 5: push current cell to stack
       cellStack.push([cellRow, cellCol]);
