@@ -9,9 +9,9 @@
 /*************************
  * Maze Cell Constructor *
  *************************/
-function MazeCell() {
-  this.border = [0, 0, 0, 0];
-  this.wall   = [0, 0, 0, 0];
+function MazeCell(border, wall) {
+  this.border = border || [0, 0, 0, 0];
+  this.wall   = wall   || [0, 0, 0, 0];
 }
 
 
@@ -64,28 +64,28 @@ MazeGenerator.prototype.drawMaze = function() {
       this.ctx.moveTo(j*rW, i*rH);
 
       // Wall: north
-      if (this.maze[i][j][4]) {
+      if (this.maze[i][j].wall[0]) {
         this.ctx.moveTo((j+1)*rW, i*rH);
       } else {
         this.ctx.lineTo((j+1)*rW, i*rH);
       }
 
       // Wall: east
-      if (this.maze[i][j][5]) {
+      if (this.maze[i][j].wall[1]) {
         this.ctx.moveTo((j+1)*rW, (i+1)*rH);
       } else {
         this.ctx.lineTo((j+1)*rW, (i+1)*rH);
       }
 
       // Wall: south
-      if (this.maze[i][j][6]) {
+      if (this.maze[i][j].wall[2]) {
         this.ctx.moveTo(j*rW, (i+1)*rH);
       } else {
         this.ctx.lineTo(j*rW, (i+1)*rH);
       }
 
       // Wall: west
-      if (this.maze[i][j][7]) {
+      if (this.maze[i][j].wall[3]) {
         this.ctx.moveTo(j*rW, i*rH);
       } else {
         this.ctx.lineTo(j*rW, i*rH);
@@ -108,37 +108,36 @@ MazeGenerator.prototype.setupMaze = function() {
   for (var i=0; i<height; i++) {
     this.maze.push([]);
     for (var j=0; j<width; j++) {
-      // Values - Clockwise NESW borders, walls
-      var cell = [0, 0, 0, 0, 0, 0, 0, 0];
+      var borders = [0, 0, 0, 0];
 
       // Border: north
       if (i === 0) {
-        cell[0] = 1;
+        borders[0] = 1;
       }
 
       // Border: south
       else if (i === height-1) {
-        cell[2] = 1;
+        borders[2] = 1;
       }
 
       // Boder: west
       if (j === 0) {
-        cell[3] = 1;
+        borders[3] = 1;
       }
 
       // Border: east
       else if (j === width-1) {
-        cell[1] = 1;
+        borders[1] = 1;
       }
 
-      this.maze[i].push(cell);
+      this.maze[i].push(new MazeCell(borders));
     }
   }
 };
 
 MazeGenerator.prototype.visitedCell = function(row, col) {
   var cell = this.maze[row][col];
-  return (cell[4] || cell[5] || cell[6] || cell[7]);
+  return (cell.wall[0] || cell.wall[1] || cell.wall[2] || cell.wall[3]);
 };
 
 MazeGenerator.prototype.getUnvisitedNeighbors = function(row, col) {
