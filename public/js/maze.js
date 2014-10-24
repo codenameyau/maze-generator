@@ -67,12 +67,12 @@ MazeGenerator.prototype.drawMaze = function() {
 
   // [TODO] move out
   this.ctx.strokeStyle = 'rgb(50, 50, 50)';
-  this.ctx.lineWidth = 1;
+  this.ctx.lineWidth = 2;
+  this.ctx.beginPath();
 
   // Draw in maze walls
   for (var i=0; i<height; i++) {
     for (var j=0; j<width; j++) {
-      this.ctx.beginPath();
       this.ctx.moveTo(j*rW, i*rH);
 
       // Wall: north
