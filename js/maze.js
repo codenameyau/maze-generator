@@ -2,6 +2,9 @@
  * Maze Generator - maze.js
  * MIT License (c) 2014
  * codenameyau.github.io
+ *
+ * Maze Algorithm Source:
+ * http://www.mazeworks.com/mazegen/mazetut/
  */
 'use strict';
 
@@ -23,7 +26,6 @@ MazeCell.prototype.connected = function() {
 MazeCell.prototype.setWall = function(position, value) {
   this.wall[position] = value;
 };
-
 
 /******************************
  * Maze Generator Constructor *
@@ -185,31 +187,31 @@ MazeGenerator.prototype.generateMaze = function() {
   var height = this.settings.height;
   var width = this.settings.width;
   var cellStack = [];
-  var total = height * width;
-  var visited = 1;
+  var totalCells = height * width;
+  var visitedCells = 1;
 
-  // Step 1: chose a random cell
-  var cellRow = this.randRange(0, height);
-  var cellCol = this.randRange(0, width);
-  var cell = this.maze[cellRow][cellCol];
+  // Chose a random cell
+  var cell = this.maze[this.randRange(0, height)][this.randRange(0, width)];
 
-  // Step 2: repeat until visited all cells
-  while (visited < 2) { // [TODO] replace with total
+  // Repeat until visited all cells
+  while (visitedCells < 2) { // [TODO] replace with total
 
-    // Step 3: find neighbors of cell with all walls intact
-    var neighbors = this.getUnvisitedNeighbors(cellRow, cellCol);
+    // Find neighbors of cell with all walls intact
+    var neighbors = this.getUnvisitedNeighbors(cell.row, cell.col);
 
     if (neighbors.length) {
-      // Step 4: knock down wall between neighbor
+      // Remove wall between cell and neighbor
       var n = neighbors[this.randRange(0, neighbors.length)];
       var nCell = n.cell;
       cell.setWall(n.current, 1);
       nCell.setWall(n.neighbor, 1);
 
-      // Step 5: push current cell to stack
-      cellStack.push([cellRow, cellCol]);
+      // Make neighbor the current cell
+      cellStack.push(nCell);
+      cell = nCell;
+      visitedCells++;
+
     }
-    visited++;
   }
 };
 
@@ -219,4 +221,3 @@ MazeGenerator.prototype.generateMaze = function() {
 MazeGenerator.prototype.randRange = function(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 };
-
