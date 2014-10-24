@@ -67,7 +67,7 @@ MazeGenerator.prototype.drawMaze = function() {
 
   // [TODO] move out
   this.ctx.strokeStyle = 'rgb(50, 50, 50)';
-  this.ctx.lineWidth = 4;
+  this.ctx.lineWidth = 1;
 
   // Draw in maze walls
   for (var i=0; i<height; i++) {
@@ -194,7 +194,7 @@ MazeGenerator.prototype.generateMaze = function() {
   var cell = this.maze[this.randRange(0, height)][this.randRange(0, width)];
 
   // Repeat until visited all cells
-  while (visitedCells < 2) { // [TODO] replace with total
+  while (visitedCells < totalCells) {
 
     // Find neighbors of cell with all walls intact
     var neighbors = this.getUnvisitedNeighbors(cell.row, cell.col);
@@ -210,8 +210,10 @@ MazeGenerator.prototype.generateMaze = function() {
       cellStack.push(nCell);
       cell = nCell;
       visitedCells++;
-
     }
+
+    // No closed-off neighbors found
+    else { cell = cellStack.pop(); }
   }
 };
 
