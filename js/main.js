@@ -16,4 +16,6 @@
   maze.generateMaze();
   maze.drawMaze();
 
+  // Setup event handler for button
+
 })();
